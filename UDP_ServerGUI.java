@@ -1,7 +1,7 @@
 import java.io.*;
 import java.net.*;
 
-public class UDPServer {
+public class UDP_ServerGUI {
     public static void main(String[] args) {
         // Server details
         final int PORT = 5000;
@@ -62,20 +62,23 @@ public class UDPServer {
                         byte[] sendBuffer = new byte[MAXLINE];
                         int bytesRead;
                         while ((bytesRead = fis.read(sendBuffer)) != -1) {
-                            DatagramPacket sendPacket = new DatagramPacket(sendBuffer, bytesRead, clientAddress, clientPort);
+                            DatagramPacket sendPacket = new DatagramPacket(sendBuffer, bytesRead, clientAddress,
+                                    clientPort);
                             socket.send(sendPacket);
                         }
                         fis.close();
 
                         // Notify client of file transfer completion
                         byte[] doneMessage = "FILE_DONE".getBytes();
-                        DatagramPacket donePacket = new DatagramPacket(doneMessage, doneMessage.length, clientAddress, clientPort);
+                        DatagramPacket donePacket = new DatagramPacket(doneMessage, doneMessage.length, clientAddress,
+                                clientPort);
                         socket.send(donePacket);
                         System.out.println("File sent successfully.");
                     } else {
                         // Notify client that file was not found
                         String errorMessage = "ERROR: File not found";
-                        DatagramPacket errorPacket = new DatagramPacket(errorMessage.getBytes(), errorMessage.length(), clientAddress, clientPort);
+                        DatagramPacket errorPacket = new DatagramPacket(errorMessage.getBytes(), errorMessage.length(),
+                                clientAddress, clientPort);
                         socket.send(errorPacket);
                         System.out.println("File not found: " + requestedFile);
                     }
@@ -88,7 +91,8 @@ public class UDPServer {
                     // Respond to other messages
                     String response = "Server received: " + clientMessage;
                     byte[] sendBuffer = response.getBytes();
-                    DatagramPacket sendPacket = new DatagramPacket(sendBuffer, sendBuffer.length, clientAddress, clientPort);
+                    DatagramPacket sendPacket = new DatagramPacket(sendBuffer, sendBuffer.length, clientAddress,
+                            clientPort);
                     socket.send(sendPacket);
                     System.out.println("Response sent to client.");
                 }
